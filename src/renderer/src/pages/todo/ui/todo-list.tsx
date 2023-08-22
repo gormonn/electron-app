@@ -49,8 +49,13 @@ export const TodoList: FC = () => {
   const [history, setHistory] = useState<StoryPointType[]>(
     persistedState?.history || [],
   );
-  const tasksHistoryPush = (newStoryPoint: TaskType, action: StoryAction) => {
-    setHistory((history) => [...history, createStory(newStoryPoint, action)]);
+  const tasksHistoryPush = (
+    newStoryPoint: TaskType | null,
+    action: StoryAction,
+  ) => {
+    if (newStoryPoint) {
+      setHistory((history) => [...history, createStory(newStoryPoint, action)]);
+    }
   };
 
   const newTask = (e: FormEvent<HTMLFormElement>) => {
@@ -67,7 +72,7 @@ export const TodoList: FC = () => {
   };
 
   useEffect(() => {
-    const eventHandler = (event, { id, result }) => {
+    const eventHandler = (_, { id, result }) => {
       setTasks((tasks) =>
         tasks.map((task) => (task.id === id ? { ...task, result } : task)),
       );
@@ -76,7 +81,7 @@ export const TodoList: FC = () => {
     ipcRenderer.on(EVENT_KEY_REPLY, eventHandler);
 
     return () => {
-      ipcRenderer.removeAllListeners(EVENT_KEY_REPLY);
+      ipcRenderer.removeListener(EVENT_KEY_REPLY, eventHandler);
     };
   }, []);
 
@@ -86,7 +91,7 @@ export const TodoList: FC = () => {
         setTasks((tasks) => {
           ipcRenderer.send(EVENT_KEY, {
             id,
-            data: tasks.find((task) => task.id === id).name,
+            data: tasks.find((task) => task.id === id)?.name || '',
           });
           return tasks.map((task) =>
             task.id === id ? { ...task, status: Status.Done } : task,
@@ -96,7 +101,7 @@ export const TodoList: FC = () => {
       setRemoved: (id: string) => () => {
         setTasks((tasks) => {
           tasksHistoryPush(
-            tasks.find((task) => task.id === id),
+            tasks.find((task) => task.id === id) || null,
             StoryAction.Remove,
           );
           return tasks.filter((task) => task.id !== id);
@@ -119,7 +124,7 @@ export const TodoList: FC = () => {
       </form>
       <div className={css.list}>
         <ControlsContext.Provider value={controls}>
-          {tasks.toReversed().map((task) => (
+          {tasks.map((task) => (
             <Task key={task.id} {...task} />
           ))}
         </ControlsContext.Provider>

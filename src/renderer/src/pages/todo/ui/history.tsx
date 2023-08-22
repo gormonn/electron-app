@@ -11,7 +11,7 @@ export const History: FC = () => {
     <>
       <h3>History</h3>
       <div className={css.list}>
-        {(data?.history || []).toReversed().map((story) => (
+        {(data?.history || []).map((story) => (
           <StoryPoint key={story.id} {...story} />
         ))}
       </div>
