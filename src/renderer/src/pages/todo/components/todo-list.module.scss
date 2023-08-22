@@ -16,6 +16,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     height: 2rem;
+    min-height: 2rem;
 
     .name{
       grid-column-start: 1;
