@@ -1,0 +1,12 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 60vh;
+
+  .menu{
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+  }
+}

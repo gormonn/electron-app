@@ -1,0 +1,41 @@
+
+.form{
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.list{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  overflow: auto;
+
+  .item{
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: 2rem;
+
+    .name{
+      grid-column-start: 1;
+    }
+    .status{
+      grid-column-start: 2;
+      &-new{
+        color: black;
+      }
+      &-done{
+        color: green;
+      }
+      &-removed{
+        color: darkred;
+      }
+    }
+    .controls{
+      display: flex;
+      grid-column-start: 3;
+      gap: .5rem;
+    }
+  }
+}

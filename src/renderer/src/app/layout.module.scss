@@ -1,0 +1,17 @@
+.app{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .header{
+    height: 100px;
+    background: #26282e;
+  }
+
+  .content{
+    margin-top: 10rem;
+    width: 600px;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+}
