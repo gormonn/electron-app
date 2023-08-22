@@ -14,17 +14,36 @@ An Electron application with React and TypeScript
 ### Install
 
 ```bash
+$ yarn install
+```
+or
+```bash
 $ pnpm install
 ```
 
 ### Development
 
 ```bash
+$ yarn dev
+```
+or
+```bash
 $ pnpm dev
 ```
 
 ### Build
 
+```bash
+# For windows
+$ yarn build:win
+
+# For macOS
+$ yarn build:mac
+
+# For Linux
+$ yarn build:linux
+```
+or
 ```bash
 # For windows
 $ pnpm build:win
