@@ -18,7 +18,6 @@ export type ListState = { tasks: TaskType[] };
 export const initialState: ListState = { tasks: [] };
 
 export const reducer = (state: ListState, action: ListAction): ListState => {
-  // todo: send history to IPC here
   switch (action.type) {
     case Status.New:
       return {
@@ -46,4 +45,7 @@ export const reducer = (state: ListState, action: ListAction): ListState => {
 };
 
 export const useTasksReducer = (defaultState = initialState) =>
-  useReducer(reducer, defaultState as ReducerState<ListState>);
+  useReducer(
+    reducer,
+    (defaultState || initialState) as ReducerState<ListState>,
+  );
