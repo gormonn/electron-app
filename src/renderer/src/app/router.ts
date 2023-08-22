@@ -1,6 +1,11 @@
-import { createHashRouter } from 'react-router-dom'
-import { RouteObject } from 'react-router/dist/lib/context'
-import { TodoList, History, TodoPage } from '@renderer/pages/todo'
+import { createHashRouter } from 'react-router-dom';
+import { RouteObject } from 'react-router/dist/lib/context';
+import {
+  TodoList,
+  History,
+  TodoPage,
+  todoListLoader,
+} from '@renderer/pages/todo';
 
 const routes: RouteObject[] = [
   {
@@ -10,18 +15,17 @@ const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        Component: TodoList
-        // loader: teamLoader,
+        Component: TodoList,
+        loader: todoListLoader,
       },
       {
         // index: true,
         path: 'history',
-        Component: History
+        Component: History,
         // loader: teamLoader,
-      }
-    ]
-  }
-]
+      },
+    ],
+  },
+];
 
-export const router = createHashRouter(routes)
-
+export const router = createHashRouter(routes);
