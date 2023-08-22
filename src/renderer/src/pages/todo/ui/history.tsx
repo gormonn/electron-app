@@ -23,7 +23,7 @@ const StoryPoint = memo<StoryPointType>(({ data, date, action }) => {
   return (
     <div className={css.item}>
       <span className={css.name}>{data?.name}</span>
-      <span className={css[`status-${action}`]}>
+      <span className={css.status}>
         {action === StoryAction.Add ? 'Was Added' : 'Was Removed'}
       </span>
       <span className={css.controls}>at {parseDate(date)}.</span>

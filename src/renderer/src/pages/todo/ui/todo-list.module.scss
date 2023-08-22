@@ -20,12 +20,11 @@
 
     .name{
       grid-column-start: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .status{
       grid-column-start: 2;
-      &-new{
-        color: black;
-      }
       &-done{
         color: green;
       }

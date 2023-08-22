@@ -49,6 +49,7 @@ export const TodoList: FC = () => {
   const [history, setHistory] = useState<StoryPointType[]>(
     persistedState?.history || [],
   );
+
   const tasksHistoryPush = (
     newStoryPoint: TaskType | null,
     action: StoryAction,
@@ -140,7 +141,7 @@ const Task = memo<TaskType>(({ id, name, status, result }) => {
     <div className={css.item}>
       <span className={css.name}>{name}</span>
       <span className={css[`status-${status}`]}>
-        {status} {result ? `(${result})` : ''}
+        {status} {result ? `(Answer: ${result})` : ''}
       </span>
       <div className={css.controls}>
         <button onClick={setComplete(id)} disabled={status === Status.Done}>
