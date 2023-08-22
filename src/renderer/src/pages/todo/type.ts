@@ -7,6 +7,7 @@ export type TaskType = {
   id: string;
   name: string;
   status: Status;
+  result?: number;
 };
 
 export enum StoryAction {

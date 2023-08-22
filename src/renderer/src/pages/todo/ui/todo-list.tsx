@@ -20,6 +20,7 @@ import {
   StoryPointType,
   TaskType,
 } from '../type';
+import { ipcRenderer } from '@renderer/shared/lib/ipcRenderer';
 
 type UpdateFn = (id: string) => () => void;
 const EmptyFn: UpdateFn = () => () => {
@@ -33,6 +34,9 @@ export const ControlsContext = createContext<{
   setComplete: EmptyFn,
   setRemoved: EmptyFn,
 });
+
+export const EVENT_KEY = 'longest-len';
+export const EVENT_KEY_REPLY = `${EVENT_KEY}-reply`;
 
 const input = document.createElement('input');
 const PERSIST_KEY = 'TodoList';
@@ -62,14 +66,32 @@ export const TodoList: FC = () => {
     inputRef.current.value = '';
   };
 
+  useEffect(() => {
+    const eventHandler = (event, { id, result }) => {
+      setTasks((tasks) =>
+        tasks.map((task) => (task.id === id ? { ...task, result } : task)),
+      );
+    };
+
+    ipcRenderer.on(EVENT_KEY_REPLY, eventHandler);
+
+    return () => {
+      ipcRenderer.removeAllListeners(EVENT_KEY_REPLY);
+    };
+  }, []);
+
   const controls = useMemo(
     () => ({
       setComplete: (id: string) => () => {
-        setTasks((tasks) =>
-          tasks.map((task) =>
+        setTasks((tasks) => {
+          ipcRenderer.send(EVENT_KEY, {
+            id,
+            data: tasks.find((task) => task.id === id).name,
+          });
+          return tasks.map((task) =>
             task.id === id ? { ...task, status: Status.Done } : task,
-          ),
-        );
+          );
+        });
       },
       setRemoved: (id: string) => () => {
         setTasks((tasks) => {
@@ -90,14 +112,14 @@ export const TodoList: FC = () => {
 
   return (
     <>
-      <h3>To Do List</h3>
+      <h3>To Do List (Longest Substring Without Repeating Characters)</h3>
       <form className={css.form} onSubmit={newTask}>
         <input ref={inputRef} type="text" name="name" required autoFocus />
         <button type="submit">Add Task</button>
       </form>
       <div className={css.list}>
         <ControlsContext.Provider value={controls}>
-          {tasks.map((task) => (
+          {tasks.toReversed().map((task) => (
             <Task key={task.id} {...task} />
           ))}
         </ControlsContext.Provider>
@@ -106,16 +128,16 @@ export const TodoList: FC = () => {
   );
 };
 
-const Task = memo<TaskType>(({ id, name, status }) => {
+const Task = memo<TaskType>(({ id, name, status, result }) => {
   const { setComplete, setRemoved } = useContext(ControlsContext);
 
   return (
     <div className={css.item}>
       <span className={css.name}>{name}</span>
-      <span className={css[`status-${status}`]}>{status}</span>
+      <span className={css[`status-${status}`]}>{status} {result ? `(${result})` : ''}</span>
       <div className={css.controls}>
         <button onClick={setComplete(id)} disabled={status === Status.Done}>
-          Complete
+          Calculate
         </button>
         <button onClick={setRemoved(id)}>Remove</button>
       </div>

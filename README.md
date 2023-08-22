@@ -1,3 +1,7 @@
+# TODO
+- use [secure-electron-template](https://github.com/reZach/secure-electron-template)
+- messages from IPC come twice
+
 # electron-app
 
 An Electron application with React and TypeScript
