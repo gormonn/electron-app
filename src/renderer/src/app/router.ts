@@ -11,7 +11,6 @@ const routes: RouteObject[] = [
   {
     path: '/',
     Component: TodoPage,
-    // loader: rootLoader,
     children: [
       {
         index: true,
@@ -19,10 +18,9 @@ const routes: RouteObject[] = [
         loader: todoListLoader,
       },
       {
-        // index: true,
         path: 'history',
         Component: History,
-        // loader: teamLoader,
+        loader: todoListLoader,
       },
     ],
   },
