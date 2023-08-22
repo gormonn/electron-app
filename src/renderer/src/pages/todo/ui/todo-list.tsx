@@ -134,7 +134,9 @@ const Task = memo<TaskType>(({ id, name, status, result }) => {
   return (
     <div className={css.item}>
       <span className={css.name}>{name}</span>
-      <span className={css[`status-${status}`]}>{status} {result ? `(${result})` : ''}</span>
+      <span className={css[`status-${status}`]}>
+        {status} {result ? `(${result})` : ''}
+      </span>
       <div className={css.controls}>
         <button onClick={setComplete(id)} disabled={status === Status.Done}>
           Calculate
