@@ -1,5 +1,6 @@
 # TODO
 - use [secure-electron-template](https://github.com/reZach/secure-electron-template)
+- React.StrictMode causes multiple messages with ipcRenderer (dev only)
 
 # electron-app
 

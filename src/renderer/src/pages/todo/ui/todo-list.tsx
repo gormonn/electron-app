@@ -73,11 +73,11 @@ export const TodoList: FC = () => {
   };
 
   useEffect(() => {
-    const eventHandler = (_, { id, result }) => {
+    function eventHandler(_, { id, result }) {
       setTasks((tasks) =>
         tasks.map((task) => (task.id === id ? { ...task, result } : task)),
       );
-    };
+    }
 
     ipcRenderer.on(EVENT_KEY_REPLY, eventHandler);
 
@@ -90,10 +90,13 @@ export const TodoList: FC = () => {
     () => ({
       setComplete: (id: string) => () => {
         setTasks((tasks) => {
-          ipcRenderer.send(EVENT_KEY, {
-            id,
-            data: tasks.find((task) => task.id === id)?.name || '',
-          });
+          queueMicrotask(() =>
+            ipcRenderer.send(EVENT_KEY, {
+              id,
+              data: tasks.find((task) => task.id === id)?.name || '',
+            }),
+          );
+
           return tasks.map((task) =>
             task.id === id ? { ...task, status: Status.Done } : task,
           );
@@ -101,10 +104,13 @@ export const TodoList: FC = () => {
       },
       setRemoved: (id: string) => () => {
         setTasks((tasks) => {
-          tasksHistoryPush(
-            tasks.find((task) => task.id === id) || null,
-            StoryAction.Remove,
+          queueMicrotask(() =>
+            tasksHistoryPush(
+              tasks.find((task) => task.id === id) || null,
+              StoryAction.Remove,
+            ),
           );
+
           return tasks.filter((task) => task.id !== id);
         });
       },
